@@ -1,3 +1,7 @@
+/**
+ * @file console.h
+ * @brief Functions for setting the colour and clearing the console
+ */
 #ifndef CONSOLE_H
 #define CONSOLE_H
 #ifdef __unix__
@@ -6,9 +10,18 @@
 #endif // __unix__
 
 void console_clear(void);
-
+/**
+ * @brief sets the color of the console
+ * @param f the foreground color
+ * @param b the background color
+ * @return (void)
+ */
 void console_set_color(int f, int b);
 
+/**
+ * @brief resets the color of the console to black and white
+ * @return (void)
+ */
 void console_reset_color(void);
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -36,7 +49,7 @@ enum color
 };
 
 #elif defined(__unix__)
-
+//replace c_printf with the colored text
 #define c_printf(format, args...)                       \
     do                                                  \
     {                                                   \

@@ -18,19 +18,20 @@ void m_exit(void);
 
 struct entry
 {
-    char title[15];
-    int foreground;
-    int background;
-    int s_foreground;
-    int s_background;
-    void (*run)(void);
+    char title[15]; //Text written on the screen
+    int foreground; //foreground color
+    int background; //background color
+    int s_foreground; //foreground color -> selected
+    int s_background; //background color -> selected
+    void (*run)(void); //Function to be executed when selected
 };
 
 struct menu
 {
     struct entry entrys[2];
-    uint8_t num_entrys;
-    uint8_t selected; //I don't think there will be more than 255 entries -> uint8_t 0-255
+    //I don't think there will be more than 255 entries -> uint8_t 0-255
+    uint8_t num_entrys; //Number of entrys
+    uint8_t selected; //Index of selected entry
 } m;
 
 void m_main()
