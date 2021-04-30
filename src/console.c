@@ -1,12 +1,24 @@
 #include "../include/console.h"
 
 #ifdef __unix__
-
+char s_color[15] = "";
 //TODO
 
-void console_clear()
+void console_clear(void)
 {
     printf("\e[1;1H\e[2J");
+}
+
+void console_set_color(int f, int b)
+{
+    int foreground = f;
+    int background = b + 10;
+    sprintf(s_color, "\x1b[%d;%dm", background, foreground);
+}
+
+void console_reset_color(void)
+{
+    sprintf(s_color, "\x1b[%d;%dm", 0, 37);
 }
 
 #elif defined(_WIN32) || defined(_WIN64)
@@ -28,14 +40,14 @@ void console_set_color(int f, int b)
     SetConsoleTextAttribute(console_handle, COL(f, b));
 }
 
-void console_reset_color()
+void console_reset_color(void)
 {
     HANDLE console_handle;
     console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(console_handle, 0b00001111);
 }
 
-void console_clear()
+void console_clear(void)
 {
 
     HANDLE console_handle = GetStdHandle(STD_OUTPUT_HANDLE);

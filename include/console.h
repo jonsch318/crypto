@@ -1,13 +1,19 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
+#ifdef __unix__
+#include <stdio.h>
+#include <stdlib.h>
+#endif // __unix__
 
-void console_clear();
+void console_clear(void);
+
+void console_set_color(int f, int b);
+
+void console_reset_color(void);
 
 #if defined(_WIN32) || defined(_WIN64)
 
-void console_reset_color();
-
-void console_set_color(int f, int b);
+#define c_printf printf
 
 enum color
 {
@@ -30,13 +36,36 @@ enum color
 };
 
 #elif defined(__unix__)
-//usage: printf(RED "red text" RESET)
-#define RED "\x1b[31m"
-#define GREEN "\x1b[32m"
-#define YELLOW "\x1b[33m"
-#define BLUE "\x1b[34m"
-#define MAGENTA "\x1b[35m"
-#define CYAN "\x1b[36m"
+
+#define c_printf(format, args...)                       \
+    do                                                  \
+    {                                                   \
+        char *str = (char *)malloc(256 * sizeof(char)); \
+        sprintf(str, format, ##args);                   \
+        printf("%s%s\x1b[0m", s_color, str);            \
+        free(str);                                      \
+    } while (0);
+
+enum color
+{
+    BLACK = 30,
+    RED = 31,
+    GREEN = 32,
+    YELLOW = 33,
+    BLUE = 34,
+    MAGENTA = 35,
+    CYAN = 36,
+    WHITE = 37,
+    GRAY = 37,
+    LIGHT_BLACK = 90,
+    LIGHT_RED = 91,
+    LIGHT_GREEN = 92,
+    LIGHT_YELLOW = 93,
+    LIGHT_BLUE = 94,
+    LIGHT_MAGENTA = 95,
+    LIGHT_CYAN = 96,
+    LIGHT_WHITE = 97
+};
 #define RESET "\x1b[0m"
 #endif
 
