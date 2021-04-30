@@ -45,6 +45,10 @@ void m_main()
     m_loop();
 }
 
+/**
+ * @brief Writes the menu and the entries to the console
+ * @return (void)
+ */
 void m_draw()
 {
     console_clear();
@@ -66,6 +70,10 @@ void m_draw()
     }
 }
 
+/**
+ * @brief The main loop of the program
+ * @return (void)
+ */
 void m_loop()
 {
     int ch;
@@ -163,6 +171,10 @@ void m_loop()
     }
 }
 
+/**
+ * @brief The " UI " for the RSA demo
+ * @return (void)
+ */
 void m_rsa()
 {
     console_clear();
@@ -198,6 +210,10 @@ void m_rsa()
     }
 }
 
+/**
+ * @brief clears the console and stops the program
+ * @return (void)
+ */
 void m_exit()
 {
     console_clear();
