@@ -1,4 +1,4 @@
-#include "helper_functions.h"
+#include "../include/helper_functions.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <math.h>
@@ -18,7 +18,7 @@ int is_prime(uint32_t p)
     int m;
     if(p%2==0)
     {
-        return -1;
+        return 0;
     }
     if(p>primes[primes_length-1])
     {
@@ -32,10 +32,10 @@ int is_prime(uint32_t p)
         r = (primes[m]>p)*(m-1)+(primes[m]<p)*r;
         if(primes[m]==p)
         {
-            return 0;
+            return -1;
         }
     }
-    return -1;
+    return 0;
 }
 
 static int trial_division(uint32_t p)
@@ -46,9 +46,9 @@ static int trial_division(uint32_t p)
     {
         if((p%i) == 0)
         {
-            return -1;
+            return 0;
         }
         i++;
     }
-    return 0;
+    return -1;
 }

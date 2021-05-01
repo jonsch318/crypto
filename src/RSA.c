@@ -1,6 +1,7 @@
-#include "asymmetric.h"
 #include <stdio.h>
 #include <stdint.h>
+#include "../include/RSA.h"
+
 
 void RSA_get(uint32_t p,uint32_t q, uint32_t *ret_N, uint32_t *ret_e, uint32_t *ret_d)
 {
