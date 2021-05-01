@@ -26,8 +26,6 @@ void console_reset_color(void);
 
 #if defined(_WIN32) || defined(_WIN64)
 
-#define c_printf printf
-
 enum color
 {
     BLACK = 0b0000,         //0x00,
@@ -49,15 +47,6 @@ enum color
 };
 
 #elif defined(__unix__)
-//replace c_printf with the colored text
-#define c_printf(format, args...)                       \
-    do                                                  \
-    {                                                   \
-        char *str = (char *)malloc(256 * sizeof(char)); \
-        sprintf(str, format, ##args);                   \
-        printf("%s%s\x1b[0m", s_color, str);            \
-        free(str);                                      \
-    } while (0);
 
 enum color
 {
@@ -79,7 +68,9 @@ enum color
     LIGHT_CYAN = 96,
     LIGHT_WHITE = 97
 };
+
 #define RESET "\x1b[0m"
+
 #endif
 
 #endif // CONSOLE_H

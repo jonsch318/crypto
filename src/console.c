@@ -1,8 +1,6 @@
 #include "../include/console.h"
 
 #ifdef __unix__
-//String for color codes
-char s_color[15] = "";
 /**
  * @brief Clears the console
  * @return (void)
@@ -22,7 +20,7 @@ void console_set_color(int f, int b)
 {
     int foreground = f;
     int background = b + 10;
-    sprintf(s_color, "\x1b[%d;%dm", background, foreground);
+    printf("\x1b[%d;%dm", background, foreground);
 }
 
 /**
@@ -31,7 +29,7 @@ void console_set_color(int f, int b)
  */
 void console_reset_color(void)
 {
-    sprintf(s_color, "\x1b[%d;%dm", 0, 37);
+    printf("\x1b[0;37m");
 }
 #elif defined(_WIN32) || defined(_WIN64)
 
