@@ -214,7 +214,7 @@ void m_rsa()
         scanf("%u %u", &p, &q);
         console_clear();
 
-    } while (is_prime(p) != 0 || is_prime(q) != 0);
+    } while (!is_prime(p) || !is_prime(q));
     RSA_get(p, q, &N, &e, &d);
     printf("p: %u\nq: %u\nN: %u\ne: %u\nd: %u\n", p, q, N, e, d);
     console_set_color(GREEN, BLACK);
