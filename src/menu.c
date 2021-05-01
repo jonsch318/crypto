@@ -236,7 +236,7 @@ void m_is_prime()
     console_set_color(WHITE, BLACK);
     printf("Primality test:\n");
     printf("Please enter a number: ");
-    console_set_color(BRIGHT_WHITE, BLACK);
+    console_set_color(LIGHT_WHITE, BLACK);
     scanf("%u", &p);
     if (is_prime(p))
     {

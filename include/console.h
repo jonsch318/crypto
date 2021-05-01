@@ -43,7 +43,7 @@ enum color
     LIGHT_RED = 0b1100,     //0x0C,
     LIGHT_MAGENTA = 0b1101, //0x0D,
     LIGHT_YELLOW = 0b1110,  //0x0E,
-    BRIGHT_WHITE = 0b1111   //0x0F
+    LIGHT_WHITE = 0b1111   //0x0F
 };
 
 #elif defined(__unix__)
