@@ -17,11 +17,12 @@ extern char *s_color;
 void m_draw(void);
 void m_loop(void);
 void m_rsa(void);
+void m_is_prime(void);
 void m_exit(void);
 
 struct entry
 {
-    char title[15];    //Text written on the screen
+    char title[25];    //Text written on the screen
     int foreground;    //foreground color
     int background;    //background color
     int s_foreground;  //foreground color -> selected
@@ -31,7 +32,7 @@ struct entry
 
 struct menu
 {
-    struct entry entrys[2];
+    struct entry entrys[3];
     //I don't think there will be more than 255 entries -> uint8_t 0-255
     uint8_t num_entrys; //Number of entrys
     uint8_t selected;   //Index of selected entry
@@ -40,10 +41,12 @@ struct menu
 void m_main()
 {
     struct entry e_rsa = {"RSA", WHITE, BLACK, BLACK, WHITE, &m_rsa};
+    struct entry e_is_prime = {"Primality test", WHITE, BLACK, BLACK, WHITE, &m_is_prime};
     struct entry e_exit = {"EXIT", WHITE, BLACK, BLACK, WHITE, &m_exit};
     m.entrys[0] = e_rsa;
-    m.entrys[1] = e_exit;
-    m.num_entrys = 2;
+    m.entrys[1] = e_is_prime;
+    m.entrys[2] = e_exit;
+    m.num_entrys = 3;
     m.selected = 0;
     m_loop();
 }
@@ -218,6 +221,35 @@ void m_rsa()
     printf("Public key: {N: %u, e: %u}\n", N, e);
     console_set_color(RED, BLACK);
     printf("Private key: {N: %u, d: %u}\n", N, d);
+    console_reset_color();
+    getchar();
+    printf("Press enter to return...");
+    while (getchar() != '\n')
+    {
+    }
+}
+
+void m_is_prime()
+{
+    uint32_t p = 0;
+    console_clear();
+    console_set_color(WHITE, BLACK);
+    printf("Primality test:\n");
+    printf("Please enter a number: ");
+    console_set_color(BRIGHT_WHITE, BLACK);
+    scanf("%u", &p);
+    if (is_prime(p))
+    {
+        console_clear();
+        console_set_color(LIGHT_GREEN, BLACK);
+        printf("%u is a prime number.\n", p);
+    }
+    else
+    {
+        console_clear();
+        console_set_color(LIGHT_RED, BLACK);
+        printf("%u is not a prime number.\n", p);
+    }
     console_reset_color();
     getchar();
     printf("Press enter to return...");
