@@ -93,39 +93,6 @@ void m_loop()
         term.c_lflag &= ~ECHO;
         tcsetattr(0, TCSANOW, &term);
         setbuf(stdin, NULL); //Deactivate buffer
-#endif                       // __unix__
-#if defined(_WIN32) || defined(_WIN64)
-        ch = getch();
-        switch (ch)
-        {
-        case 0xE0:
-            ch = getch();
-            switch (ch)
-            {
-            case 0x4B: //LEFT
-                key = 0;
-                break;
-                key = 1;
-            case 0x48: //UP
-                key = 2;
-                break;
-            case 0x4D: //RIGHT
-                key = 3;
-                break;
-            case 0x50: //DOWN
-                key = 4;
-                break;
-            }
-            break;
-        case 0x0D: //RETURN
-        case 0x20: //SPACE
-            key = 5;
-            break;
-        case 0x1B: //ESCAPE
-            key = 6;
-            break;
-        }
-#elif defined(__unix__)
         ch = getchar();
         switch (ch)
         {
@@ -164,6 +131,37 @@ void m_loop()
             break;
         }
         tcsetattr(0, TCSANOW, &term_old);
+#elif defined(_WIN32) || defined(_WIN64)
+        ch = getch();
+        switch (ch)
+        {
+        case 0xE0:
+            ch = getch();
+            switch (ch)
+            {
+            case 0x4B: //LEFT
+                key = 0;
+                break;
+                key = 1;
+            case 0x48: //UP
+                key = 2;
+                break;
+            case 0x4D: //RIGHT
+                key = 3;
+                break;
+            case 0x50: //DOWN
+                key = 4;
+                break;
+            }
+            break;
+        case 0x0D: //RETURN
+        case 0x20: //SPACE
+            key = 5;
+            break;
+        case 0x1B: //ESCAPE
+            key = 6;
+            break;
+        }
 #endif
         switch (key)
         {
