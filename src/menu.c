@@ -223,7 +223,6 @@ void m_rsa()
     printf("Press enter to return...");
     while (getchar() != '\n')
     {
-        //flush input buffer
     }
 }
 
