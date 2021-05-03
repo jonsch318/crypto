@@ -18,11 +18,12 @@ void m_draw(void);
 void m_loop(void);
 void m_rsa(void);
 void m_is_prime(void);
+void m_get_prime(void);
 void m_exit(void);
 
 struct entry
 {
-    char title[25];    //Text written on the screen
+    char title[50];    //Text written on the screen
     int foreground;    //foreground color
     int background;    //background color
     int s_foreground;  //foreground color -> selected
@@ -32,7 +33,7 @@ struct entry
 
 struct menu
 {
-    struct entry entrys[3];
+    struct entry entrys[4];
     //I don't think there will be more than 255 entries -> uint8_t 0-255
     uint8_t num_entrys; //Number of entrys
     uint8_t selected;   //Index of selected entry
@@ -42,11 +43,13 @@ void m_main()
 {
     struct entry e_rsa = {"RSA", WHITE, BLACK, BLACK, WHITE, &m_rsa};
     struct entry e_is_prime = {"Primality test", WHITE, BLACK, BLACK, WHITE, &m_is_prime};
+    struct entry e_get_prime = {"Prime number generator", WHITE, BLACK, BLACK, WHITE, &m_get_prime};
     struct entry e_exit = {"EXIT", WHITE, BLACK, BLACK, WHITE, &m_exit};
     m.entrys[0] = e_rsa;
     m.entrys[1] = e_is_prime;
-    m.entrys[2] = e_exit;
-    m.num_entrys = 3;
+    m.entrys[2] = e_get_prime;
+    m.entrys[3] = e_exit;
+    m.num_entrys = 4;
     m.selected = 0;
     m_loop();
 }
@@ -229,6 +232,10 @@ void m_rsa()
     }
 }
 
+/**
+ * @brief The "UI" for the primality test
+ * @return (void)
+ */
 void m_is_prime()
 {
     uint32_t p = 0;
@@ -249,6 +256,35 @@ void m_is_prime()
         console_clear();
         console_set_color(LIGHT_RED, BLACK);
         printf("%u is not a prime number.\n", p);
+    }
+    console_reset_color();
+    getchar();
+    printf("Press enter to return...");
+    while (getchar() != '\n')
+    {
+    }
+}
+
+/**
+ * @brief The "UI" for the random prime number generator
+ * @return (void)
+ */
+void m_get_prime()
+{
+    uint32_t p = 0;
+    int i = 0;
+    console_clear();
+    console_set_color(WHITE, BLACK);
+    printf("Random prime number generator:\n");
+    printf("Please enter the number of numbers to be generated: ");
+    console_set_color(LIGHT_WHITE, BLACK);
+    scanf("%d", &i);
+    console_clear();
+    while (i)
+    {
+        console_set_color((i % 2) * WHITE + (!(i % 2)) * GRAY, BLACK);
+        printf("%d: %u\n", i, get_prime());
+        i--;
     }
     console_reset_color();
     getchar();

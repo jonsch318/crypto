@@ -10,4 +10,10 @@
  */
 int is_prime(uint32_t p);
 
+/**
+ * @brief Generates a random prime number
+ * @return The prime number
+ */
+uint32_t get_prime();
+
 #endif // HELPER_FUNCTIONS_H_INCLUDED
