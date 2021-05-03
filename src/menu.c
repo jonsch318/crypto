@@ -282,8 +282,9 @@ void m_get_prime()
     console_clear();
     while (i)
     {
+        p = get_prime();
         console_set_color((i % 2) * WHITE + (!(i % 2)) * GRAY, BLACK);
-        printf("%d: %u\n", i, get_prime());
+        printf("%d: %u\n", i, p);
         i--;
     }
     console_reset_color();
