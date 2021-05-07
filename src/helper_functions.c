@@ -37,7 +37,7 @@ int is_prime(uint32_t p)
         r = (primes[m] > p) * (m - 1) + (primes[m] < p) * r;
         if (primes[m] == p)
         {
-            return -1;
+            return 1;
         }
     }
     return 0;
