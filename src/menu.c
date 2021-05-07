@@ -146,11 +146,11 @@ void m_loop()
         }
         tcsetattr(0, TCSANOW, &term_old);
 #elif defined(_WIN32) || defined(_WIN64)
-        ch = getch();
+        ch = _getch();
         switch (ch)
         {
         case 0xE0:
-            ch = getch();
+            ch = _getch();
             switch (ch)
             {
             case 0x4B: //LEFT
