@@ -2,7 +2,7 @@
  * 
  * @brief The module generates RSA key pairs from two prime numbers
  *
- */ 
+ */
 #ifndef RSA_H_INCLUDED
 #define RSA_H_INCLUDED
 #include <stdint.h>
@@ -16,6 +16,16 @@
  * @param ret_d the pointer to the uint32_t of the d value of the private key
  * @return (void)
  */
-void RSA_get(uint32_t p,uint32_t q, uint32_t *ret_N, uint32_t *ret_e, uint32_t *ret_d);
+void RSA_get(uint32_t p, uint32_t q, uint32_t *ret_N, uint32_t *ret_e, uint32_t *ret_d);
+
+/**
+ * @brief Encrypts a string with the specified key
+ * @param in The input
+ * @param n The N value of the public key
+ * @param e The e value of the public key
+ * @param out The output
+ * @return 
+ */
+char *RSA_encrypt(const char *in, uint32_t n, uint32_t e, char *out);
 
 #endif // RSA_H_INCLUDED

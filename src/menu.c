@@ -3,6 +3,7 @@
 #include "../include/RSA.h"
 #include "../include/helper_functions.h"
 #include <stdint.h>
+#include <inttypes.h>
 #include <stdlib.h>
 #include <stdio.h>
 #if defined(_WIN32) || defined(_WIN64)
@@ -17,6 +18,7 @@ extern char *s_color;
 void m_draw(void);
 void m_loop(void);
 void m_rsa(void);
+void m_rsa_encrypt(void);
 void m_is_prime(void);
 void m_get_prime(void);
 void m_exit(void);
@@ -33,7 +35,7 @@ struct entry
 
 struct menu
 {
-    struct entry entrys[4];
+    struct entry entrys[5];
     //I don't think there will be more than 255 entries -> uint8_t 0-255
     uint8_t num_entrys; //Number of entrys
     uint8_t selected;   //Index of selected entry
@@ -42,14 +44,16 @@ struct menu
 void m_main()
 {
     struct entry e_rsa = {"RSA", WHITE, BLACK, BLACK, WHITE, &m_rsa};
+    struct entry e_rsa_encrypt = {"RSA -> encrypt", WHITE, BLACK, BLACK, WHITE, &m_rsa_encrypt};
     struct entry e_is_prime = {"Primality test", WHITE, BLACK, BLACK, WHITE, &m_is_prime};
     struct entry e_get_prime = {"Prime number generator", WHITE, BLACK, BLACK, WHITE, &m_get_prime};
     struct entry e_exit = {"EXIT", WHITE, BLACK, BLACK, WHITE, &m_exit};
     m.entrys[0] = e_rsa;
-    m.entrys[1] = e_is_prime;
-    m.entrys[2] = e_get_prime;
-    m.entrys[3] = e_exit;
-    m.num_entrys = 4;
+    m.entrys[1] = e_rsa_encrypt;
+    m.entrys[2] = e_is_prime;
+    m.entrys[3] = e_get_prime;
+    m.entrys[4] = e_exit;
+    m.num_entrys = 5;
     m.selected = 0;
     m_loop();
 }
@@ -214,16 +218,56 @@ void m_rsa()
         console_set_color(GRAY, BLACK);
         printf(" (prime_1 prime_2):\n");
         console_reset_color();
-        scanf("%u %u", &p, &q);
+        scanf("%" PRIu32 " %" PRIu32 "", &p, &q);
         console_clear();
 
     } while (!is_prime(p) || !is_prime(q));
     RSA_get(p, q, &N, &e, &d);
-    printf("p: %u\nq: %u\nN: %u\ne: %u\nd: %u\n", p, q, N, e, d);
+    printf("p: %" PRIu32 "\nq: %" PRIu32 "\nN: %" PRIu32 "\ne: %" PRIu32 "\nd: %" PRIu32 "\n", p, q, N, e, d);
     console_set_color(GREEN, BLACK);
-    printf("Public key: {N: %u, e: %u}\n", N, e);
+    printf("Public key: {N: %" PRIu32 ", e: %" PRIu32 "}\n", N, e);
     console_set_color(RED, BLACK);
-    printf("Private key: {N: %u, d: %u}\n", N, d);
+    printf("Private key: {N: %" PRIu32 ", d: %" PRIu32 "}\n", N, d);
+    console_reset_color();
+    getchar();
+    printf("Press enter to return...");
+    while (getchar() != '\n')
+    {
+    }
+}
+
+void m_rsa_encrypt()
+{
+    uint32_t n = 0;
+    uint32_t e = 0;
+    char str[250];
+    char *encrypted = NULL;
+    console_clear();
+    console_set_color(WHITE, BLACK);
+    printf("RSA -> encrypt:\n");
+    printf("Please enter the public key");
+    console_set_color(GRAY, BLACK);
+    printf(" (N e):\n");
+    console_reset_color();
+    scanf("%" PRIu32 " %" PRIu32 "", &n, &e);
+    console_set_color(WHITE, BLACK);
+    printf("Please enter the text to be encrypted (max. 250): ");
+    console_reset_color();
+    getchar();
+    scanf("%[^\n]s", str);
+    encrypted = RSA_encrypt(str, n, e, encrypted);
+    console_clear();
+    console_set_color(GREEN, BLACK);
+    printf("Key\n{\n\tn: %" PRIu32 "\n\te: %" PRIu32 "\n}\n", n, e);
+    console_set_color(LIGHT_WHITE, BLACK);
+    printf("Input:\n");
+    console_set_color(WHITE, BLACK);
+    printf("%s\n", str);
+    console_set_color(LIGHT_WHITE, BLACK);
+    printf("Output:\n");
+    console_set_color(WHITE, BLACK);
+    printf("%s\n\n", encrypted);
+    free(encrypted);
     console_reset_color();
     getchar();
     printf("Press enter to return...");
@@ -244,18 +288,18 @@ void m_is_prime()
     printf("Primality test:\n");
     printf("Please enter a number: ");
     console_set_color(LIGHT_WHITE, BLACK);
-    scanf("%u", &p);
+    scanf("%" PRIu32 "", &p);
     if (is_prime(p))
     {
         console_clear();
         console_set_color(LIGHT_GREEN, BLACK);
-        printf("%u is a prime number.\n", p);
+        printf("%" PRIu32 " is a prime number.\n", p);
     }
     else
     {
         console_clear();
         console_set_color(LIGHT_RED, BLACK);
-        printf("%u is not a prime number.\n", p);
+        printf("%" PRIu32 " is not a prime number.\n", p);
     }
     console_reset_color();
     getchar();
@@ -284,7 +328,7 @@ void m_get_prime()
     {
         p = get_prime();
         console_set_color((i % 2) * WHITE + (!(i % 2)) * GRAY, BLACK);
-        printf("%d: %u\n", i, p);
+        printf("%d: %" PRIu32 "\n", i, p);
         i--;
     }
     console_reset_color();
