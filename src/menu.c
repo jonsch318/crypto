@@ -41,6 +41,10 @@ struct menu
     uint8_t selected;   //Index of selected entry
 } m;
 
+/**
+ * @brief Initialises the main menu
+ * @return (void)
+ */
 void m_main()
 {
     struct entry e_rsa = {"RSA", WHITE, BLACK, BLACK, WHITE, &m_rsa};
@@ -236,6 +240,10 @@ void m_rsa()
     }
 }
 
+/**
+ * @brief The "UI" for encrypting with the RSA algorithm
+ * @return (void)
+ */
 void m_rsa_encrypt()
 {
     uint32_t n = 0;
