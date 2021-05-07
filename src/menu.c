@@ -255,7 +255,7 @@ void m_rsa_encrypt()
     console_reset_color();
     getchar();
     scanf("%[^\n]s", str);
-    encrypted = RSA_encrypt(str, n, e, encrypted);
+    encrypted = RSA_encrypt_string(str, n, e, encrypted);
     console_clear();
     console_set_color(GREEN, BLACK);
     printf("Key\n{\n\tn: %" PRIu32 "\n\te: %" PRIu32 "\n}\n", n, e);

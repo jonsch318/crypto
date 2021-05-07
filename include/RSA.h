@@ -26,6 +26,6 @@ void RSA_get(uint32_t p, uint32_t q, uint32_t *ret_N, uint32_t *ret_e, uint32_t 
  * @param out The output
  * @return 
  */
-char *RSA_encrypt(const char *in, uint32_t n, uint32_t e, char *out);
+char *RSA_encrypt_string(const char *in, uint32_t n, uint32_t e, char *out);
 
 #endif // RSA_H_INCLUDED
