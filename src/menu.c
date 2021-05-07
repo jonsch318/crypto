@@ -326,7 +326,7 @@ void m_get_prime()
     console_clear();
     console_set_color(WHITE, BLACK);
     printf("Random prime number generator:\n");
-    printf("Please enter the number of numbers to be generated: ");
+    printf("Please enter the amount of numbers to be generated: ");
     console_set_color(LIGHT_WHITE, BLACK);
     scanf("%d", &i);
     console_clear();
