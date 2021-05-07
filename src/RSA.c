@@ -11,7 +11,7 @@
 
 static uint32_t rsa_encrypt(uint32_t c, uint32_t n, uint32_t e);
 static uint32_t rsa_decrypt(uint32_t m, uint32_t n, uint32_t d);
-static uint32_t rsa_pow(uint32_t m, uint32_t e);
+static uint32_t rsa_pow(uint32_t a, uint32_t b);
 static uint32_t rsa_mod(uint32_t a, uint32_t b);
 static uint32_t mod_pow(uint32_t b, uint32_t e, uint32_t m);
 
