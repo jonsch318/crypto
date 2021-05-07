@@ -1,11 +1,19 @@
+/**
+ * @file RSA.c
+ * @date 2021-05-07
+ * @todo Implement rsa with GMP(https://gmplib.org/)
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <inttypes.h>
 #include "../include/RSA.h"
 
+static uint32_t rsa_encrypt(uint32_t c, uint32_t n, uint32_t e);
+static uint32_t rsa_decrypt(uint32_t m, uint32_t n, uint32_t d);
 static uint32_t rsa_pow(uint32_t m, uint32_t e);
-static inline uint32_t rsa_mod(uint32_t a, uint32_t b);
+static uint32_t rsa_mod(uint32_t a, uint32_t b);
+static uint32_t mod_pow(uint32_t b, uint32_t e, uint32_t m);
 
 void RSA_get(uint32_t p, uint32_t q, uint32_t *ret_N, uint32_t *ret_e, uint32_t *ret_d)
 {
@@ -49,8 +57,8 @@ char *RSA_encrypt_string(const char *in, uint32_t n, uint32_t e, char *out)
         }
         else
         {
-            int c = rsa_mod(rsa_pow((uint32_t)in[i], e), n);
-            fprintf(f, "%04" PRIX32 "(%c) ", c, (char)c);
+            uint32_t c = rsa_encrypt((uint32_t)in[i], n, e);
+            fprintf(f, "%04" PRIX32 " ", c);
         }
     }
     fseek(f, 0, SEEK_END);
@@ -58,27 +66,66 @@ char *RSA_encrypt_string(const char *in, uint32_t n, uint32_t e, char *out)
     fseek(f, 0, SEEK_SET);
     out = (char *)malloc(1 + size * sizeof(char));
     fread(out, 1, size, f);
-    for (int i = 0; i <= size; i++)
-    {
-        out[i] = (out[i] != '\0') * out[i] + (out[i] == '\0') * '0';
-    }
     out[size] = '\0';
     fclose(f);
     return out;
 }
 
-static uint32_t rsa_pow(uint32_t m, uint32_t e)
+static uint32_t rsa_encrypt(uint32_t c, uint32_t n, uint32_t e)
+{
+    return mod_pow(c, e, n);
+}
+
+static uint32_t rsa_decrypt(uint32_t m, uint32_t n, uint32_t d)
+{
+    return mod_pow(m, d, n);
+}
+
+/**
+ * @brief Computes a^b
+ * @param a
+ * @param b
+ * @return a^b
+ */
+static uint32_t rsa_pow(uint32_t a, uint32_t b)
 {
     uint32_t out = 1;
-    while (e)
+    while (b)
     {
-        out *= m;
-        e--;
+        out *= a;
+        b--;
     }
     return out;
 }
 
-static inline uint32_t rsa_mod(uint32_t a, uint32_t b)
+/**
+ * @brief Computes a mod b
+ * @param a
+ * @param b
+ * @return a % b
+ */
+static uint32_t rsa_mod(uint32_t a, uint32_t b)
 {
     return (a - b * (a / b));
+}
+
+/**
+ * @brief Computes b^e mod m
+ * @param b Base
+ * @param e Exponent
+ * @param m Modulus
+ * @return b^e mod m
+ */
+static uint32_t mod_pow(uint32_t b, uint32_t e, uint32_t m)
+{
+    if (m == 0)
+    {
+        return 0;
+    }
+    uint32_t c = 1;
+    for (uint32_t i = 0; i < e; i++)
+    {
+        c = rsa_mod((c * b), m);
+    }
+    return c;
 }
