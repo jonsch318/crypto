@@ -1,8 +1,8 @@
 #include "../../include/menu.h"
 #include "../../include/console.h"
-#include "../include/TUI/menu.h"
-#include "../include/TUI/rsa.h"
-#include "../include/TUI/helper_functions.h"
+#include "../include/ui/menu.h"
+#include "../include/ui/rsa.h"
+#include "../include/ui/helper_functions.h"
 #include <stdio.h>
 #include <stdlib.h>
 #if defined(_WIN32) || defined(_WIN64)

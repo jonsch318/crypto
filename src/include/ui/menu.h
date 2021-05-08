@@ -1,5 +1,5 @@
-#ifndef TUI_MENU_H
-#define TUI_MENU_H
+#ifndef UI_MENU_H
+#define UI_MENU_H
 #include <stdint.h>
 
 typedef struct menu menu;
@@ -24,4 +24,4 @@ struct menu
     uint8_t selected;   //Index of selected entry
 };
 
-#endif // TUI_MENU_H
+#endif // UI_MENU_H

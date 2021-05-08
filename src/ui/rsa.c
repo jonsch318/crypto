@@ -1,4 +1,4 @@
-#include "../include/TUI/rsa.h"
+#include "../include/ui/rsa.h"
 #include "../../include/console.h"
 #include "../../include/RSA.h"
 #include "../../include/helper_functions.h"
