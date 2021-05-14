@@ -1,7 +1,6 @@
 #include "../include/ui/rsa.h"
 #include "../../include/console.h"
 #include "../../include/RSA.h"
-#include "../../include/helper_functions.h"
 #include <stdint.h>
 #include <inttypes.h>
 #include <stdio.h>
@@ -16,6 +15,7 @@ void m_rsa()
     console_clear();
     console_set_color(WHITE, BLACK);
     printf("RSA:\n");
+#if 0
     uint32_t p = 0;
     uint32_t q = 0;
     uint32_t N = 0;
@@ -37,6 +37,39 @@ void m_rsa()
     printf("Public key: {N: %" PRIu32 ", e: %" PRIu32 "}\n", N, e);
     console_set_color(RED, BLACK);
     printf("Private key: {N: %" PRIu32 ", d: %" PRIu32 "}\n", N, d);
+#elif 1
+    mpz_t p;
+    mpz_t q;
+    mpz_t N;
+    mpz_t e;
+    mpz_t d;
+    mpz_init(p);
+    mpz_init(q);
+    mpz_init(N);
+    mpz_init(e);
+    mpz_init(d);
+    do
+    {
+        printf("Please enter two prime numbers");
+        console_set_color(GRAY, BLACK);
+        printf(" (prime_1 prime_2):\n");
+        console_reset_color();
+        gmp_scanf("%Zd %Zd", &p, &q);
+        console_clear();
+
+    } while (!mpz_probab_prime_p(p, 25) || !mpz_probab_prime_p(q, 25));
+    gmp_RSA_get(p, q, &N, &e, &d);
+    gmp_printf("p: %Zd\nq: %Zd\nN: %Zd\ne: %Zd\nd: %Zd\n", p, q, N, e, d);
+    console_set_color(GREEN, BLACK);
+    gmp_printf("Public key: {N: %Zd, e: %Zd}\n", N, e);
+    console_set_color(RED, BLACK);
+    gmp_printf("Private key: {N: %Zd, d: %Zd}\n", N, d);
+    mpz_clear(p);
+    mpz_clear(q);
+    mpz_clear(N);
+    mpz_clear(e);
+    mpz_clear(d);
+#endif
     console_reset_color();
     getchar();
     printf("Press enter to return...");
