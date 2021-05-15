@@ -26,6 +26,4 @@ uint32_t prime_get(uint32_t n);
  */
 void prime_gmp_get(mp_bitcnt_t n, mpz_t *out);
 
-void helper_functions_exit();
-
 #endif // HELPER_FUNCTIONS_H_INCLUDED
