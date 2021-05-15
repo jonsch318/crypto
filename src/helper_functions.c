@@ -6,9 +6,9 @@
 #include <time.h>
 #include <gmp.h>
 
-gmp_randstate_t s;
+static gmp_randstate_t s;
 int rand_initialised = 0;
-int rand_gmp_initialised = 0;
+static int rand_gmp_initialised = 0;
 static uint32_t rand_bitmask = (1 << 31) | 1;
 
 //static array of the first 10.000 prime numbers
@@ -91,9 +91,4 @@ void prime_gmp_get(mp_bitcnt_t n, mpz_t *out)
     }
     mpz_urandomb(*out, s, n);
     mpz_nextprime(*out, *out);
-}
-
-void helper_functions_exit()
-{
-    gmp_randclear(s);
 }

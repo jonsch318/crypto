@@ -186,7 +186,6 @@ static void m_loop()
  */
 static void m_exit()
 {
-    helper_functions_exit();
     console_clear();
     exit(0);
 }
