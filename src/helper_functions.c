@@ -4,8 +4,11 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <gmp.h>
 
+gmp_randstate_t s;
 int rand_initialised = 0;
+int rand_gmp_initialised = 0;
 static uint32_t rand_bitmask = (1 << 31) | 1;
 
 //static array of the first 10.000 prime numbers
@@ -58,7 +61,7 @@ static int trial_division(uint32_t p)
     return -1;
 }
 
-uint32_t get_prime()
+uint32_t prime_get(uint32_t n)
 {
     if (!rand_initialised)
     {
@@ -73,6 +76,24 @@ uint32_t get_prime()
         p |= (rand() & 0xff) << 16;
         p |= (rand() & 0xff) << 24;
         p |= rand_bitmask;
+        p %= n;
+        p |= 1;
     } while (!is_prime(p));
     return p;
+}
+
+void prime_gmp_get(mp_bitcnt_t n, mpz_t *out)
+{
+    if (!rand_gmp_initialised)
+    {
+        rand_gmp_initialised = 1;
+        gmp_randinit_default(s);
+    }
+    mpz_urandomb(*out, s, n);
+    mpz_nextprime(*out, *out);
+}
+
+void helper_functions_exit()
+{
+    gmp_randclear(s);
 }

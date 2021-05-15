@@ -15,7 +15,7 @@ void m_rsa()
     console_clear();
     console_set_color(WHITE, BLACK);
     printf("RSA:\n");
-#if !USE_GMP
+#if !RSA_USE_GMP
     uint32_t p = 0;
     uint32_t q = 0;
     uint32_t N = 0;
@@ -37,7 +37,7 @@ void m_rsa()
     printf("Public key: {N: %" PRIu32 ", e: %" PRIu32 "}\n", N, e);
     console_set_color(RED, BLACK);
     printf("Private key: {N: %" PRIu32 ", d: %" PRIu32 "}\n", N, d);
-#elif USE_GMP
+#elif RSA_USE_GMP
     mpz_t p;
     mpz_t q;
     mpz_t N;
@@ -84,10 +84,10 @@ void m_rsa()
  */
 void m_rsa_encrypt()
 {
-#if !USE_GMP
+#if !RSA_USE_GMP
     uint32_t n = 0;
     uint32_t e = 0;
-#elif USE_GMP
+#elif RSA_USE_GMP
     mpz_t n;
     mpz_t e;
     mpz_init(n);
@@ -102,9 +102,9 @@ void m_rsa_encrypt()
     console_set_color(GRAY, BLACK);
     printf(" (N e):\n");
     console_reset_color();
-#if !USE_GMP
+#if !RSA_USE_GMP
     scanf("%" PRIu32 " %" PRIu32 "", &n, &e);
-#elif USE_GMP
+#elif RSA_USE_GMP
     gmp_scanf("%Zd %Zd", &n, &e);
 #endif
     console_set_color(WHITE, BLACK);
@@ -112,9 +112,9 @@ void m_rsa_encrypt()
     console_reset_color();
     getchar();
     scanf("%[^\n]s", str);
-#if !USE_GMP
+#if !RSA_USE_GMP
     encrypted = RSA_encrypt_string(str, n, e, encrypted);
-#elif USE_GMP
+#elif RSA_USE_GMP
     encrypted = RSA_gmp_encrypt_string(str, n, e, encrypted);
     mpz_clear(n);
     mpz_clear(e);
