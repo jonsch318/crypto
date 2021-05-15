@@ -11,9 +11,9 @@
 
 static uint32_t rsa_encrypt(uint32_t c, uint32_t n, uint32_t e);
 static void rsa_gmp_encrypt(const mpz_t c, const mpz_t n, const mpz_t e, mpz_t *out);
-static uint32_t rsa_decrypt(uint32_t m, uint32_t n, uint32_t d);
-static void rsa_gmp_decrypt(const mpz_t m, const mpz_t n, const mpz_t d, mpz_t *out);
-static uint32_t rsa_pow(uint32_t a, uint32_t b);
+static uint32_t rsa_decrypt(uint32_t m, uint32_t n, uint32_t d) __attribute__((unused));
+static void rsa_gmp_decrypt(const mpz_t m, const mpz_t n, const mpz_t d, mpz_t *out) __attribute__((unused));
+static uint32_t rsa_pow(uint32_t a, uint32_t b) __attribute__((unused));
 static uint32_t rsa_mod(uint32_t a, uint32_t b);
 static uint32_t mod_pow(uint32_t b, uint32_t e, uint32_t m);
 
