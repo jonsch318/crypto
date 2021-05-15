@@ -28,7 +28,7 @@ void RSA_get(uint32_t p, uint32_t q, uint32_t *ret_N, uint32_t *ret_e, uint32_t 
  * @param ret_d the pointer to the mpz_t of the d value of the private key
  * @return (void)
  */
-void gmp_RSA_get(const mpz_t p, const mpz_t q, mpz_t *ret_N, mpz_t *ret_e, mpz_t *ret_d);
+void RSA_gmp_get(const mpz_t p, const mpz_t q, mpz_t *ret_N, mpz_t *ret_e, mpz_t *ret_d);
 
 /**
  * @brief Encrypts a string with the specified key
@@ -39,5 +39,15 @@ void gmp_RSA_get(const mpz_t p, const mpz_t q, mpz_t *ret_N, mpz_t *ret_e, mpz_t
  * @return 
  */
 char *RSA_encrypt_string(const char *in, uint32_t n, uint32_t e, char *out);
+
+/**
+ * @brief Encrypts a string with the specified key
+ * @param in The input
+ * @param n The N value of the public key
+ * @param e The e value of the public key
+ * @param out The output
+ * @return 
+ */
+char *RSA_gmp_encrypt_string(const char *in, const mpz_t n, const mpz_t e, char *out);
 
 #endif // RSA_H_INCLUDED

@@ -15,7 +15,7 @@ void m_rsa()
     console_clear();
     console_set_color(WHITE, BLACK);
     printf("RSA:\n");
-#if 0
+#if !USE_GMP
     uint32_t p = 0;
     uint32_t q = 0;
     uint32_t N = 0;
@@ -37,7 +37,7 @@ void m_rsa()
     printf("Public key: {N: %" PRIu32 ", e: %" PRIu32 "}\n", N, e);
     console_set_color(RED, BLACK);
     printf("Private key: {N: %" PRIu32 ", d: %" PRIu32 "}\n", N, d);
-#elif 1
+#elif USE_GMP
     mpz_t p;
     mpz_t q;
     mpz_t N;
@@ -58,12 +58,12 @@ void m_rsa()
         console_clear();
 
     } while (!mpz_probab_prime_p(p, 25) || !mpz_probab_prime_p(q, 25));
-    gmp_RSA_get(p, q, &N, &e, &d);
+    RSA_gmp_get(p, q, &N, &e, &d);
     gmp_printf("p: %Zd\nq: %Zd\nN: %Zd\ne: %Zd\nd: %Zd\n", p, q, N, e, d);
     console_set_color(GREEN, BLACK);
-    gmp_printf("Public key: {N: %Zd, e: %Zd}\n", N, e);
+    gmp_printf("Public key:\n{\n\tN: %Zd,\n\te: %Zd\n}\n", N, e);
     console_set_color(RED, BLACK);
-    gmp_printf("Private key: {N: %Zd, d: %Zd}\n", N, d);
+    gmp_printf("Private key:\n{\n\tN: %Zd,\n\td: %Zd\n}\n", N, d);
     mpz_clear(p);
     mpz_clear(q);
     mpz_clear(N);
@@ -84,8 +84,15 @@ void m_rsa()
  */
 void m_rsa_encrypt()
 {
+#if !USE_GMP
     uint32_t n = 0;
     uint32_t e = 0;
+#elif USE_GMP
+    mpz_t n;
+    mpz_t e;
+    mpz_init(n);
+    mpz_init(e);
+#endif
     char str[250];
     char *encrypted = NULL;
     console_clear();
@@ -95,13 +102,23 @@ void m_rsa_encrypt()
     console_set_color(GRAY, BLACK);
     printf(" (N e):\n");
     console_reset_color();
+#if !USE_GMP
     scanf("%" PRIu32 " %" PRIu32 "", &n, &e);
+#elif USE_GMP
+    gmp_scanf("%Zd %Zd", &n, &e);
+#endif
     console_set_color(WHITE, BLACK);
     printf("Please enter the text to be encrypted (max. 250): ");
     console_reset_color();
     getchar();
     scanf("%[^\n]s", str);
+#if !USE_GMP
     encrypted = RSA_encrypt_string(str, n, e, encrypted);
+#elif USE_GMP
+    encrypted = RSA_gmp_encrypt_string(str, n, e, encrypted);
+    mpz_clear(n);
+    mpz_clear(e);
+#endif
     console_clear();
     console_set_color(LIGHT_WHITE, BLACK);
     printf("Input:\n");

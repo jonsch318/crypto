@@ -10,7 +10,9 @@
 #include "../include/RSA.h"
 
 static uint32_t rsa_encrypt(uint32_t c, uint32_t n, uint32_t e);
+static void rsa_gmp_encrypt(const mpz_t c, const mpz_t n, const mpz_t e, mpz_t *out);
 static uint32_t rsa_decrypt(uint32_t m, uint32_t n, uint32_t d);
+static void rsa_gmp_decrypt(const mpz_t m, const mpz_t n, const mpz_t d, mpz_t *out);
 static uint32_t rsa_pow(uint32_t a, uint32_t b);
 static uint32_t rsa_mod(uint32_t a, uint32_t b);
 static uint32_t mod_pow(uint32_t b, uint32_t e, uint32_t m);
@@ -46,7 +48,7 @@ void RSA_get(uint32_t p, uint32_t q, uint32_t *ret_N, uint32_t *ret_e, uint32_t 
 #endif // DEBUG_RSA
 }
 
-void gmp_RSA_get(const mpz_t p, const mpz_t q, mpz_t *ret_N, mpz_t *ret_e, mpz_t *ret_d)
+void RSA_gmp_get(const mpz_t p, const mpz_t q, mpz_t *ret_N, mpz_t *ret_e, mpz_t *ret_d)
 {
     mpz_t N;
     mpz_t r;
@@ -131,6 +133,35 @@ char *RSA_encrypt_string(const char *in, uint32_t n, uint32_t e, char *out)
     return out;
 }
 
+char *RSA_gmp_encrypt_string(const char *in, const mpz_t n, const mpz_t e, char *out)
+{
+    FILE *f = tmpfile();
+    mpz_t c;
+    mpz_init(c);
+    for (int i = 0; in[i] != '\0'; i++)
+    {
+        if (in[i] == '\n')
+        {
+            fprintf(f, "\n");
+        }
+        else
+        {
+            mpz_set_ui(c, (unsigned long)in[i]);
+            rsa_gmp_encrypt(c, n, e, &c);
+            gmp_fprintf(f, "%04ZX ", c);
+        }
+    }
+    mpz_clear(c);
+    fseek(f, 0, SEEK_END);
+    size_t size = (size_t)ftell(f);
+    fseek(f, 0, SEEK_SET);
+    out = (char *)malloc(1 + size * sizeof(char));
+    fread(out, 1, size, f);
+    out[size] = '\0';
+    fclose(f);
+    return out;
+}
+
 static uint32_t rsa_encrypt(uint32_t c, uint32_t n, uint32_t e)
 {
     return mod_pow(c, e, n);
@@ -139,6 +170,16 @@ static uint32_t rsa_encrypt(uint32_t c, uint32_t n, uint32_t e)
 static uint32_t rsa_decrypt(uint32_t m, uint32_t n, uint32_t d)
 {
     return mod_pow(m, d, n);
+}
+
+static void rsa_gmp_encrypt(const mpz_t c, const mpz_t n, const mpz_t e, mpz_t *out)
+{
+    mpz_powm(*out, c, e, n);
+}
+
+static void rsa_gmp_decrypt(const mpz_t m, const mpz_t n, const mpz_t d, mpz_t *out)
+{
+    mpz_powm(*out, m, d, n);
 }
 
 /**
