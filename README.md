@@ -1,7 +1,6 @@
 <h1 align="center"><i>crypto</i></h1>
 <h2 align="center">This library is for experimental purposes and should not be used for security related tasks!</h2>
 <p align="center" >A cryptography library, written in C, build from the ground up.<p>
-[![C/C++ CI](https://github.com/NilEis/crypto/actions/workflows/c-cpp.yml/badge.svg?event=push)](https://github.com/NilEis/crypto/actions/workflows/c-cpp.yml)
 
 ## Contributing
 See our [CONTRIBUTING.md](https://github.com/JohnnyS318/crypto/blob/master/CONTRIBUTING.md) guide for contributing to this library.
