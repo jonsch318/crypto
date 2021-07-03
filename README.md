@@ -1,4 +1,3 @@
-[![C/C++ CI](https://github.com/NilEis/crypto/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/NilEis/crypto/actions/workflows/c-cpp.yml)
 <h1 align="center"><i>crypto</i></h1>
 <h2 align="center">This library is for experimental purposes and should not be used for security related tasks!</h2>
 <p align="center" >A cryptography library, written in C, build from the ground up.<p>
