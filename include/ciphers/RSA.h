@@ -46,7 +46,7 @@ char *RSA_encrypt_string(const char *in, uint32_t n, uint32_t e, char *out);
  * @param n The N value of the public key
  * @param e The e value of the public key
  * @param out The output
- * @return 
+ * @return
  */
 char *RSA_gmp_encrypt_string(const char *in, const mpz_t n, const mpz_t e, char *out);
 

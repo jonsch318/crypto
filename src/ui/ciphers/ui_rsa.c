@@ -125,7 +125,7 @@ void m_rsa_encrypt()
     console_set_color(WHITE, BLACK);
     printf("%s\n", str);
     console_set_color(LIGHT_WHITE, BLACK);
-    printf("Output:\n");
+    printf("ciphertext:\n");
     console_set_color(WHITE, BLACK);
     printf("%s\n\n", encrypted);
     free(encrypted);
