@@ -1,6 +1,6 @@
-#include "../include/ui/rsa.h"
-#include "../../include/console.h"
-#include "../../include/RSA.h"
+#include "../../include/ui/ciphers/rsa.h"
+#include "../../../include/console.h"
+#include "../../../include/ciphers/RSA.h"
 #include <stdint.h>
 #include <inttypes.h>
 #include <stdio.h>

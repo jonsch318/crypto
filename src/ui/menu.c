@@ -2,7 +2,7 @@
 #include "../../include/console.h"
 #include "../../include/helper_functions.h"
 #include "../include/ui/menu.h"
-#include "../include/ui/rsa.h"
+#include "../include/ui/ciphers/rsa.h"
 #include "../include/ui/helper_functions.h"
 #include <stdio.h>
 #include <stdlib.h>
