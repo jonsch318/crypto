@@ -3,6 +3,7 @@
 #include "../../include/helper_functions.h"
 #include "../include/ui/ui_menu.h"
 #include "../include/ui/ciphers/ui_rsa.h"
+#include "../include/ui/ciphers/ui_xor.h"
 #include "../include/ui/ui_helper_functions.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,15 +28,17 @@ void m_main()
 {
     static entry e_rsa = {"RSA", WHITE, BLACK, BLACK, WHITE, &m_rsa};
     static entry e_rsa_encrypt = {"RSA -> encrypt", WHITE, BLACK, BLACK, WHITE, &m_rsa_encrypt};
+    static entry e_xor = {"XOR", WHITE, BLACK, BLACK, WHITE, &m_xor};
     static entry e_is_prime = {"Primality test", WHITE, BLACK, BLACK, WHITE, &m_is_prime};
     static entry e_prime_get = {"Prime number generator", WHITE, BLACK, BLACK, WHITE, &m_prime_get};
     static entry e_exit = {"EXIT", WHITE, BLACK, BLACK, WHITE, &m_exit};
     m.entrys[0] = e_rsa;
     m.entrys[1] = e_rsa_encrypt;
-    m.entrys[2] = e_is_prime;
-    m.entrys[3] = e_prime_get;
-    m.entrys[4] = e_exit;
-    m.num_entrys = 5;
+    m.entrys[2] = e_xor;
+    m.entrys[3] = e_is_prime;
+    m.entrys[4] = e_prime_get;
+    m.entrys[5] = e_exit;
+    m.num_entrys = 6;
     m.selected = 0;
     m_loop();
 }

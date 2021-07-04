@@ -18,7 +18,7 @@ struct entry
 
 struct menu
 {
-    struct entry entrys[5];
+    struct entry entrys[6];
     //I don't think there will be more than 255 entries -> uint8_t 0-255
     uint8_t num_entrys; //Number of entrys
     uint8_t selected;   //Index of selected entry
