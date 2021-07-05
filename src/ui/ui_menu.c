@@ -179,7 +179,7 @@ static void m_loop()
             exit(0);
             break;
         }
-        m.selected = (m.selected > 0) * (m.selected % m.num_entrys);
+        m.selected = ((m.selected >= 0) && (m.selected < UINT8_MAX)) * (m.selected % m.num_entrys) + (m.selected == UINT8_MAX) * (m.num_entrys - 1);
     }
 }
 
