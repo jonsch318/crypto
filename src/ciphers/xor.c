@@ -33,5 +33,5 @@ int xor_encrypt(char *inp, char *pass, char *outp)
     {
         outp[i] = inp[i] ^ pass[i % pass_len];
     }
-    return inp_len;
+    return inp_len - 1;
 }
