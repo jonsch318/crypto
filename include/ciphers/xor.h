@@ -1,5 +1,8 @@
 #ifndef XOR_H
 #define XOR_H
+/**
+ * plaintext XOR key = ciphertext  <--->  ciphertext XOR key = plaintext
+ */
 #define xor_decrypt(inp, pass, outp) xor_encrypt(inp, pass, outp)
 
 /**
