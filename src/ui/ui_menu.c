@@ -1,10 +1,12 @@
-#include "../include/menu.h"
-#include "../include/console.h"
-#include "../include/RSA.h"
-#include "../include/helper_functions.h"
-#include <stdint.h>
-#include <stdlib.h>
+#include "../../include/menu.h"
+#include "../../include/console.h"
+#include "../../include/helper_functions.h"
+#include "../include/ui/ui_menu.h"
+#include "../include/ui/ciphers/ui_rsa.h"
+#include "../include/ui/ciphers/ui_xor.h"
+#include "../include/ui/ui_helper_functions.h"
 #include <stdio.h>
+#include <stdlib.h>
 #if defined(_WIN32) || defined(_WIN64)
 #include <conio.h>
 #elif defined(__unix__)
@@ -12,41 +14,31 @@
 #include <sys/ioctl.h>
 #endif
 
-extern char *s_color;
+static void m_draw(void);
+static void m_loop(void);
+static void m_exit(void);
 
-void m_draw(void);
-void m_loop(void);
-void m_rsa(void);
-void m_is_prime(void);
-void m_exit(void);
+static menu m;
 
-struct entry
-{
-    char title[25];    //Text written on the screen
-    int foreground;    //foreground color
-    int background;    //background color
-    int s_foreground;  //foreground color -> selected
-    int s_background;  //background color -> selected
-    void (*run)(void); //Function to be executed when selected
-};
-
-struct menu
-{
-    struct entry entrys[3];
-    //I don't think there will be more than 255 entries -> uint8_t 0-255
-    uint8_t num_entrys; //Number of entrys
-    uint8_t selected;   //Index of selected entry
-} m;
-
+/**
+ * @brief Initialises the main menu
+ * @return (void)
+ */
 void m_main()
 {
-    struct entry e_rsa = {"RSA", WHITE, BLACK, BLACK, WHITE, &m_rsa};
-    struct entry e_is_prime = {"Primality test", WHITE, BLACK, BLACK, WHITE, &m_is_prime};
-    struct entry e_exit = {"EXIT", WHITE, BLACK, BLACK, WHITE, &m_exit};
+    static entry e_rsa = {"RSA", WHITE, BLACK, BLACK, WHITE, &m_rsa};
+    static entry e_rsa_encrypt = {"RSA -> encrypt", WHITE, BLACK, BLACK, WHITE, &m_rsa_encrypt};
+    static entry e_xor = {"XOR", WHITE, BLACK, BLACK, WHITE, &m_xor};
+    static entry e_is_prime = {"Primality test", WHITE, BLACK, BLACK, WHITE, &m_is_prime};
+    static entry e_prime_get = {"Prime number generator", WHITE, BLACK, BLACK, WHITE, &m_prime_get};
+    static entry e_exit = {"EXIT", WHITE, BLACK, BLACK, WHITE, &m_exit};
     m.entrys[0] = e_rsa;
-    m.entrys[1] = e_is_prime;
-    m.entrys[2] = e_exit;
-    m.num_entrys = 3;
+    m.entrys[1] = e_rsa_encrypt;
+    m.entrys[2] = e_xor;
+    m.entrys[3] = e_is_prime;
+    m.entrys[4] = e_prime_get;
+    m.entrys[5] = e_exit;
+    m.num_entrys = 6;
     m.selected = 0;
     m_loop();
 }
@@ -55,7 +47,7 @@ void m_main()
  * @brief Writes the menu and the entries to the console
  * @return (void)
  */
-void m_draw()
+static void m_draw()
 {
     console_clear();
     printf("\n");
@@ -80,7 +72,7 @@ void m_draw()
  * @brief The main loop of the program
  * @return (void)
  */
-void m_loop()
+static void m_loop()
 {
     int ch;
     int key;
@@ -135,11 +127,11 @@ void m_loop()
         }
         tcsetattr(0, TCSANOW, &term_old);
 #elif defined(_WIN32) || defined(_WIN64)
-        ch = getch();
+        ch = _getch();
         switch (ch)
         {
         case 0xE0:
-            ch = getch();
+            ch = _getch();
             switch (ch)
             {
             case 0x4B: //LEFT
@@ -187,74 +179,7 @@ void m_loop()
             exit(0);
             break;
         }
-        m.selected = (m.selected > 0) * (m.selected % m.num_entrys);
-    }
-}
-
-/**
- * @brief The " UI " for the RSA demo
- * @return (void)
- */
-void m_rsa()
-{
-    console_clear();
-    console_set_color(WHITE, BLACK);
-    printf("RSA:\n");
-    uint32_t p = 0;
-    uint32_t q = 0;
-    uint32_t N = 0;
-    uint32_t e = 0;
-    uint32_t d = 0;
-    do
-    {
-        printf("Please enter two prime numbers");
-        console_set_color(GRAY, BLACK);
-        printf(" (prime_1 prime_2):\n");
-        console_reset_color();
-        scanf("%u %u", &p, &q);
-        console_clear();
-
-    } while (!is_prime(p) || !is_prime(q));
-    RSA_get(p, q, &N, &e, &d);
-    printf("p: %u\nq: %u\nN: %u\ne: %u\nd: %u\n", p, q, N, e, d);
-    console_set_color(GREEN, BLACK);
-    printf("Public key: {N: %u, e: %u}\n", N, e);
-    console_set_color(RED, BLACK);
-    printf("Private key: {N: %u, d: %u}\n", N, d);
-    console_reset_color();
-    getchar();
-    printf("Press enter to return...");
-    while (getchar() != '\n')
-    {
-    }
-}
-
-void m_is_prime()
-{
-    uint32_t p = 0;
-    console_clear();
-    console_set_color(WHITE, BLACK);
-    printf("Primality test:\n");
-    printf("Please enter a number: ");
-    console_set_color(LIGHT_WHITE, BLACK);
-    scanf("%u", &p);
-    if (is_prime(p))
-    {
-        console_clear();
-        console_set_color(LIGHT_GREEN, BLACK);
-        printf("%u is a prime number.\n", p);
-    }
-    else
-    {
-        console_clear();
-        console_set_color(LIGHT_RED, BLACK);
-        printf("%u is not a prime number.\n", p);
-    }
-    console_reset_color();
-    getchar();
-    printf("Press enter to return...");
-    while (getchar() != '\n')
-    {
+        m.selected = ((m.selected >= 0) && (m.selected < UINT8_MAX)) * (m.selected % m.num_entrys) + (m.selected == UINT8_MAX) * (m.num_entrys - 1);
     }
 }
 
@@ -262,7 +187,7 @@ void m_is_prime()
  * @brief clears the console and stops the program
  * @return (void)
  */
-void m_exit()
+static void m_exit()
 {
     console_clear();
     exit(0);
