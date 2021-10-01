@@ -7,7 +7,7 @@
 #include <stdint.h>
 #include <inttypes.h>
 #include <gmp.h>
-#include "../../include/ciphers/RSA.h"
+#include "../../include/ciphers/rsa.h"
 
 static uint32_t rsa_encrypt(uint32_t c, uint32_t n, uint32_t e);
 static void rsa_gmp_encrypt(const mpz_t c, const mpz_t n, const mpz_t e, mpz_t *out);
