@@ -20,6 +20,8 @@ static void m_exit(void);
 
 static menu m;
 
+static char buffer[8192] = {0};
+
 /**
  * @brief Initialises the main menu
  * @return (void)
@@ -40,6 +42,7 @@ void m_main()
     m.entrys[5] = e_exit;
     m.num_entrys = 6;
     m.selected = 0;
+    setbuf(stdout, buffer);
     m_loop();
 }
 
@@ -56,16 +59,21 @@ static void m_draw()
         if (m.selected == i)
         {
             printf(" -> ");
+#ifdef __unix__
             console_set_color(m.entrys[(int)i].s_foreground, m.entrys[(int)i].s_background);
+#endif
         }
         else
         {
             printf("    ");
+#ifdef __unix__
             console_set_color(m.entrys[(int)i].foreground, m.entrys[(int)i].background);
+#endif
         }
         printf("%s\n", m.entrys[(int)i].title);
         console_reset_color();
     }
+    fflush(stdout);
 }
 
 /**
@@ -173,9 +181,12 @@ static void m_loop()
             m.selected++;
             break;
         case 5:
+            setbuf(stdout, NULL);
             m.entrys[m.selected].run();
+            setbuf(stdout, buffer);
             break;
         case 6:
+            setbuf(stdout, NULL);
             exit(0);
             break;
         }
