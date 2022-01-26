@@ -4,7 +4,7 @@ SRCS = $(wildcard $(SRC)/*.c) $(wildcard $(SRC)/*/*.c) $(wildcard $(SRC)/*/*/*.c
 OBJ = obj
 OBJS = $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(SRCS))
 DFLAGS = -g3 -Wall
-FLAGS = -g3 -Wall -m64 -flto -pg -no-pie --coverage -ftest-coverage -fprofile-arcs
+FLAGS = -O3 -Wall -m64 -flto
 LFLAGS = -lm -static -lgmp
 BINDIR = bin
 BIN = $(BINDIR)/crypto
@@ -31,7 +31,7 @@ $(BIN): $(OBJS)
 $(OBJ)/%.o: $(SRC)/%.c
 	$(CC) $(FLAGS) -c $< -o $@
 
-.PHONY : clean run strip
+.PHONY : clean run strip git-clean
 
 ifeq ($(OS),Windows_NT)
 OBJS := $(subst /,\, $(OBJS))
@@ -39,7 +39,10 @@ BIN := $(subst /,\, $(BIN)).exe
 endif
 
 clean:
-	$(RM) $(BIN) $(OBJS) *.gcno *.gcda *.out *.gcov
+	$(RM) $(BIN) $(OBJS)
+
+git-clean:
+	git clean -xdf
 
 run: all
 	$(BIN)
