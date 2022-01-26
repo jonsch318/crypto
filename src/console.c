@@ -11,7 +11,7 @@ void console_clear(void)
 }
 /**
  * @brief Sets the color of the console
- * 
+ *
  * @param f Foreground
  * @param b Background
  * @return (void)
@@ -37,13 +37,13 @@ void console_reset_color(void)
 #include <windows.h>
 /**
  * @brief generates a color from a given foreground and background color
- * 
+ *
  */
 #define COL(f, b) ((uint8_t)((b << 4) | f))
 
 /**
  * @brief generates a color from r,g and b
- * 
+ *
  * @param r activate the red bit
  * @param g activate the green bit
  * @param b activate the blue bit
@@ -75,7 +75,7 @@ void console_reset_color(void)
 {
     HANDLE console_handle;
     console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(console_handle, 0b00001111);
+    SetConsoleTextAttribute(console_handle, COL(LIGHT_WHITE, BLACK));
 }
 
 /**
@@ -85,8 +85,11 @@ void console_reset_color(void)
 void console_clear(void)
 {
 
-    HANDLE console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
-
+    static HANDLE console_handle = NULL;
+    if (console_handle == NULL)
+    {
+        console_handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    }
     if (console_handle == INVALID_HANDLE_VALUE)
     {
         return;
