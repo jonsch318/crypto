@@ -52,7 +52,8 @@ void m_main()
  */
 static void m_draw()
 {
-    console_clear();
+    console_set_cursor_pos(0, 0);
+    //console_clear();
     printf("\n");
     for (uint8_t i = 0; i < m.num_entrys; i++)
     {
@@ -84,6 +85,7 @@ static void m_loop()
 {
     int ch;
     int key;
+    console_clear();
     for (;;)
     {
         key = -1;
@@ -181,11 +183,14 @@ static void m_loop()
             m.selected++;
             break;
         case 5:
+            console_clear();
             setbuf(stdout, NULL);
             m.entrys[m.selected].run();
             setbuf(stdout, buffer);
+            console_clear();
             break;
         case 6:
+            console_clear();
             setbuf(stdout, NULL);
             exit(0);
             break;

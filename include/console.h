@@ -10,6 +10,13 @@
 #endif // __unix__
 
 void console_clear(void);
+
+/**
+ * @brief set the cursor position
+ * @return (void)
+ */
+void console_set_cursor_pos(int x, int y);
+
 /**
  * @brief sets the color of the console
  * @param f the foreground color

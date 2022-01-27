@@ -9,6 +9,12 @@ void console_clear(void)
 {
     printf("\e[1;1H\e[2J");
 }
+
+void console_set_cursor_pos(int x, int y)
+{
+    printf("%c[%d;%df", 0x1B, y, x);
+}
+
 /**
  * @brief Sets the color of the console
  *
@@ -118,6 +124,14 @@ void console_clear(void)
     }
 
     SetConsoleCursorPosition(console_handle, start_coords);
+}
+
+void console_set_cursor_pos(int x, int y)
+{
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
 #endif
