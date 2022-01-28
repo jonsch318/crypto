@@ -61,3 +61,6 @@ bin/crypto
 build/
 CMakeCache.txt
 CMakeFiles/
+*.cmake
+!FindGMP.cmake
+Makefile

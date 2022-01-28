@@ -16,7 +16,7 @@ find_package(GMP REQUIRED)
 
 add_executable(crypto src/main.c)
 
-target_link_libraries(crypto c-terminal ui ciphers helper_functions gmp)
+target_link_libraries(crypto c_terminal crypto_ui ciphers helper_functions gmp)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
