@@ -1,10 +1,10 @@
 #include "../../include/menu.h"
 #include "../../include/console.h"
 #include "../../include/helper_functions.h"
-#include "../include/ui/ui_menu.h"
-#include "../include/ui/ciphers/ui_rsa.h"
-#include "../include/ui/ciphers/ui_xor.h"
-#include "../include/ui/ui_helper_functions.h"
+#include "../../include/ui/ui_menu.h"
+#include "../../include/ui/ciphers/ui_rsa.h"
+#include "../../include/ui/ciphers/ui_xor.h"
+#include "../../include/ui/ui_helper_functions.h"
 #include <stdio.h>
 #include <stdlib.h>
 #if defined(_WIN32) || defined(_WIN64)
