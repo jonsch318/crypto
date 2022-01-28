@@ -1,5 +1,5 @@
 #include "../../include/menu.h"
-#include "../../include/console.h"
+#include "../extern/c-terminal/include/terminal.h"
 #include "../../include/helper_functions.h"
 #include "../../include/ui/ui_menu.h"
 #include "../../include/ui/ciphers/ui_rsa.h"
@@ -49,21 +49,21 @@ void m_main()
  */
 static void m_draw()
 {
-    console_set_cursor_pos(0, 1);
+    terminal_set_cursor_pos(0, 1);
     for (uint8_t i = 0; i < m.num_entrys; i++)
     {
         if (m.selected == i)
         {
             printf(" -> ");
-            console_set_color(m.entrys[(int)i].s_foreground, m.entrys[(int)i].s_background);
+            terminal_set_color(m.entrys[(int)i].s_foreground, m.entrys[(int)i].s_background);
         }
         else
         {
             printf("    ");
-            console_set_color(m.entrys[(int)i].foreground, m.entrys[(int)i].background);
+            terminal_set_color(m.entrys[(int)i].foreground, m.entrys[(int)i].background);
         }
         printf("%s\n", m.entrys[(int)i].title);
-        console_reset_color();
+        terminal_reset_color();
     }
 }
 
@@ -75,7 +75,7 @@ static void m_loop()
 {
     int ch;
     int key;
-    console_clear();
+    terminal_clear();
     for (;;)
     {
         key = -1;
@@ -173,12 +173,12 @@ static void m_loop()
             m.selected++;
             break;
         case 5:
-            console_clear();
+            terminal_clear();
             m.entrys[m.selected].run();
-            console_clear();
+            terminal_clear();
             break;
         case 6:
-            console_clear();
+            terminal_clear();
             exit(0);
             break;
         }
@@ -192,6 +192,6 @@ static void m_loop()
  */
 static void m_exit()
 {
-    console_clear();
+    terminal_clear();
     exit(0);
 }
