@@ -57,3 +57,5 @@ bin/crypto
 *.gcno
 *.gcda
 *.gcov
+
+build/
