@@ -1,6 +1,7 @@
 #include "../../../include/ui/ciphers/ui_rsa.h"
 #include "../../extern/c-terminal/include/terminal.h"
 #include "../../../include/ciphers/rsa.h"
+#include "../../../include/helper_functions.h"
 #include <stdint.h>
 #include <inttypes.h>
 #include <stdio.h>
@@ -15,7 +16,7 @@ void m_rsa()
     terminal_clear();
     terminal_set_color(WHITE, BLACK);
     printf("RSA:\n");
-#if !RSA_USE_GMP
+#if !USE_GMP
     uint32_t p = 0;
     uint32_t q = 0;
     uint32_t N = 0;
@@ -37,7 +38,7 @@ void m_rsa()
     printf("Public key: {N: %" PRIu32 ", e: %" PRIu32 "}\n", N, e);
     terminal_set_color(RED, BLACK);
     printf("Private key: {N: %" PRIu32 ", d: %" PRIu32 "}\n", N, d);
-#elif RSA_USE_GMP
+#elif USE_GMP
     mpz_t p;
     mpz_t q;
     mpz_t N;
@@ -84,10 +85,10 @@ void m_rsa()
  */
 void m_rsa_encrypt()
 {
-#if !RSA_USE_GMP
+#if !USE_GMP
     uint32_t n = 0;
     uint32_t e = 0;
-#elif RSA_USE_GMP
+#elif USE_GMP
     mpz_t n;
     mpz_t e;
     mpz_init(n);
@@ -102,9 +103,9 @@ void m_rsa_encrypt()
     terminal_set_color(GRAY, BLACK);
     printf(" (N e):\n");
     terminal_reset_color();
-#if !RSA_USE_GMP
+#if !USE_GMP
     scanf("%" PRIu32 " %" PRIu32 "", &n, &e);
-#elif RSA_USE_GMP
+#elif USE_GMP
     gmp_scanf("%Zd %Zd", &n, &e);
 #endif
     terminal_set_color(WHITE, BLACK);
@@ -112,9 +113,9 @@ void m_rsa_encrypt()
     terminal_reset_color();
     getchar();
     scanf("%[^\n]s", str);
-#if !RSA_USE_GMP
+#if !USE_GMP
     encrypted = RSA_encrypt_string(str, n, e, encrypted);
-#elif RSA_USE_GMP
+#elif USE_GMP
     encrypted = RSA_gmp_encrypt_string(str, n, e, encrypted);
     mpz_clear(n);
     mpz_clear(e);

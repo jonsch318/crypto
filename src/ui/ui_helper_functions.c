@@ -4,7 +4,9 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
+#ifdef USE_GMP
 #include <gmp.h>
+#endif
 
 /**
  * @brief The "UI" for the primality test
@@ -46,10 +48,10 @@ void m_is_prime()
 void m_prime_get()
 {
     int i = 0;
-#if !HELPER_FUNCTIONS_USE_GMP
+#if !USE_GMP
     int n = 0;
     uint32_t p = 0;
-#elif HELPER_FUNCTIONS_USE_GMP
+#elif USE_GMP
     mpz_t p;
     int tmp = 0;
     mp_bitcnt_t n = 1;
@@ -60,9 +62,9 @@ void m_prime_get()
     printf("Random prime number generator:\n");
     printf("Please enter the amount and size of numbers to be generated: ");
     terminal_set_color(LIGHT_WHITE, BLACK);
-#if !HELPER_FUNCTIONS_USE_GMP
+#if !USE_GMP
     scanf("%d %d", &i, &n);
-#elif HELPER_FUNCTIONS_USE_GMP
+#elif USE_GMP
     scanf("%d %d", &i, &tmp);
     n = (mp_bitcnt_t)tmp;
 #endif
@@ -70,16 +72,16 @@ void m_prime_get()
     while (i)
     {
         terminal_set_color((i % 2) * WHITE + (!(i % 2)) * GRAY, BLACK);
-#if !HELPER_FUNCTIONS_USE_GMP
+#if !USE_GMP
         p = prime_get(n);
         printf("%d: %" PRIu32 "\n", i, p);
-#elif HELPER_FUNCTIONS_USE_GMP
+#elif USE_GMP
         prime_gmp_get(n, &p);
         gmp_printf("%d: %Zd\n", i, p);
 #endif
         i--;
     }
-#if HELPER_FUNCTIONS_USE_GMP
+#if USE_GMP
     mpz_clear(p);
 #endif
     terminal_reset_color();
