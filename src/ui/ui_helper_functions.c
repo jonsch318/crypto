@@ -1,10 +1,12 @@
-#include "../include/ui/ui_helper_functions.h"
-#include "../../include/console.h"
+#include "../../include/ui/ui_helper_functions.h"
+#include "../extern/c-terminal/include/terminal.h"
 #include "../../include/helper_functions.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>
+#ifdef USE_GMP
 #include <gmp.h>
+#endif
 
 /**
  * @brief The "UI" for the primality test
@@ -13,25 +15,25 @@
 void m_is_prime()
 {
     uint32_t p = 0;
-    console_clear();
-    console_set_color(WHITE, BLACK);
+    terminal_clear();
+    terminal_set_color(WHITE, BLACK);
     printf("Primality test:\n");
     printf("Please enter a number: ");
-    console_set_color(LIGHT_WHITE, BLACK);
+    terminal_set_color(LIGHT_WHITE, BLACK);
     scanf("%" PRIu32 "", &p);
     if (is_prime(p))
     {
-        console_clear();
-        console_set_color(LIGHT_GREEN, BLACK);
+        terminal_clear();
+        terminal_set_color(LIGHT_GREEN, BLACK);
         printf("%" PRIu32 " is a prime number.\n", p);
     }
     else
     {
-        console_clear();
-        console_set_color(LIGHT_RED, BLACK);
+        terminal_clear();
+        terminal_set_color(LIGHT_RED, BLACK);
         printf("%" PRIu32 " is not a prime number.\n", p);
     }
-    console_reset_color();
+    terminal_reset_color();
     getchar();
     printf("Press enter to return...");
     while (getchar() != '\n')
@@ -46,43 +48,43 @@ void m_is_prime()
 void m_prime_get()
 {
     int i = 0;
-#if !HELPER_FUNCTIONS_USE_GMP
+#if !USE_GMP
     int n = 0;
     uint32_t p = 0;
-#elif HELPER_FUNCTIONS_USE_GMP
+#elif USE_GMP
     mpz_t p;
     int tmp = 0;
     mp_bitcnt_t n = 1;
     mpz_init(p);
 #endif
-    console_clear();
-    console_set_color(WHITE, BLACK);
+    terminal_clear();
+    terminal_set_color(WHITE, BLACK);
     printf("Random prime number generator:\n");
     printf("Please enter the amount and size of numbers to be generated: ");
-    console_set_color(LIGHT_WHITE, BLACK);
-#if !HELPER_FUNCTIONS_USE_GMP
+    terminal_set_color(LIGHT_WHITE, BLACK);
+#if !USE_GMP
     scanf("%d %d", &i, &n);
-#elif HELPER_FUNCTIONS_USE_GMP
+#elif USE_GMP
     scanf("%d %d", &i, &tmp);
     n = (mp_bitcnt_t)tmp;
 #endif
-    console_clear();
+    terminal_clear();
     while (i)
     {
-        console_set_color((i % 2) * WHITE + (!(i % 2)) * GRAY, BLACK);
-#if !HELPER_FUNCTIONS_USE_GMP
+        terminal_set_color((i % 2) * WHITE + (!(i % 2)) * GRAY, BLACK);
+#if !USE_GMP
         p = prime_get(n);
         printf("%d: %" PRIu32 "\n", i, p);
-#elif HELPER_FUNCTIONS_USE_GMP
+#elif USE_GMP
         prime_gmp_get(n, &p);
         gmp_printf("%d: %Zd\n", i, p);
 #endif
         i--;
     }
-#if HELPER_FUNCTIONS_USE_GMP
+#if USE_GMP
     mpz_clear(p);
 #endif
-    console_reset_color();
+    terminal_reset_color();
     getchar();
     printf("Press enter to return...");
     while (getchar() != '\n')

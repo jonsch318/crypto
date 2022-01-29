@@ -1,14 +1,17 @@
-#include "../include/helper_functions.h"
+#include "../../include/helper_functions.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#ifdef USE_GMP
 #include <gmp.h>
 
 static gmp_randstate_t s;
-int rand_initialised = 0;
 static int rand_gmp_initialised = 0;
+#endif
+
+int rand_initialised = 0;
 static uint32_t rand_bitmask = (1 << 31) | 1;
 
 //static array of the first 10.000 prime numbers
@@ -82,6 +85,7 @@ uint32_t prime_get(uint32_t n)
     return p;
 }
 
+#ifdef USE_GMP
 void prime_gmp_get(mp_bitcnt_t n, mpz_t *out)
 {
     if (!rand_gmp_initialised)
@@ -92,3 +96,4 @@ void prime_gmp_get(mp_bitcnt_t n, mpz_t *out)
     mpz_urandomb(*out, s, n);
     mpz_nextprime(*out, *out);
 }
+#endif

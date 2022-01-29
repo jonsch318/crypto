@@ -57,3 +57,11 @@ bin/crypto
 *.gcno
 *.gcda
 *.gcov
+
+build/
+CMakeCache.txt
+CMakeFiles/
+*.cmake
+!FindGMP.cmake
+Makefile
+src/extern/

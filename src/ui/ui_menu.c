@@ -1,10 +1,10 @@
 #include "../../include/menu.h"
-#include "../../include/console.h"
+#include "../extern/c-terminal/include/terminal.h"
 #include "../../include/helper_functions.h"
-#include "../include/ui/ui_menu.h"
-#include "../include/ui/ciphers/ui_rsa.h"
-#include "../include/ui/ciphers/ui_xor.h"
-#include "../include/ui/ui_helper_functions.h"
+#include "../../include/ui/ui_menu.h"
+#include "../../include/ui/ciphers/ui_rsa.h"
+#include "../../include/ui/ciphers/ui_xor.h"
+#include "../../include/ui/ui_helper_functions.h"
 #include <stdio.h>
 #include <stdlib.h>
 #if defined(_WIN32) || defined(_WIN64)
@@ -20,20 +20,18 @@ static void m_exit(void);
 
 static menu m;
 
-static char buffer[8192] = {0};
-
 /**
  * @brief Initialises the main menu
  * @return (void)
  */
 void m_main()
 {
-    static entry e_rsa = {"RSA", WHITE, BLACK, BLACK, WHITE, &m_rsa};
-    static entry e_rsa_encrypt = {"RSA -> encrypt", WHITE, BLACK, BLACK, WHITE, &m_rsa_encrypt};
-    static entry e_xor = {"XOR", WHITE, BLACK, BLACK, WHITE, &m_xor};
-    static entry e_is_prime = {"Primality test", WHITE, BLACK, BLACK, WHITE, &m_is_prime};
-    static entry e_prime_get = {"Prime number generator", WHITE, BLACK, BLACK, WHITE, &m_prime_get};
-    static entry e_exit = {"EXIT", WHITE, BLACK, BLACK, WHITE, &m_exit};
+    static entry e_rsa         = {"RSA                   ", WHITE, BLACK, BLACK, WHITE, &m_rsa};
+    static entry e_rsa_encrypt = {"RSA -> encrypt        ", WHITE, BLACK, BLACK, WHITE, &m_rsa_encrypt};
+    static entry e_xor         = {"XOR                   ", WHITE, BLACK, BLACK, WHITE, &m_xor};
+    static entry e_is_prime    = {"Primality test        ", WHITE, BLACK, BLACK, WHITE, &m_is_prime};
+    static entry e_prime_get   = {"Prime number generator", WHITE, BLACK, BLACK, WHITE, &m_prime_get};
+    static entry e_exit        = {"EXIT                  ", WHITE, BLACK, BLACK, WHITE, &m_exit};
     m.entrys[0] = e_rsa;
     m.entrys[1] = e_rsa_encrypt;
     m.entrys[2] = e_xor;
@@ -42,7 +40,6 @@ void m_main()
     m.entrys[5] = e_exit;
     m.num_entrys = 6;
     m.selected = 0;
-    setbuf(stdout, buffer);
     m_loop();
 }
 
@@ -52,28 +49,22 @@ void m_main()
  */
 static void m_draw()
 {
-    console_clear();
-    printf("\n");
+    terminal_set_cursor_pos(0, 1);
     for (uint8_t i = 0; i < m.num_entrys; i++)
     {
         if (m.selected == i)
         {
             printf(" -> ");
-#ifdef __unix__
-            console_set_color(m.entrys[(int)i].s_foreground, m.entrys[(int)i].s_background);
-#endif
+            terminal_set_color(m.entrys[(int)i].s_foreground, m.entrys[(int)i].s_background);
         }
         else
         {
             printf("    ");
-#ifdef __unix__
-            console_set_color(m.entrys[(int)i].foreground, m.entrys[(int)i].background);
-#endif
+            terminal_set_color(m.entrys[(int)i].foreground, m.entrys[(int)i].background);
         }
         printf("%s\n", m.entrys[(int)i].title);
-        console_reset_color();
+        terminal_reset_color();
     }
-    fflush(stdout);
 }
 
 /**
@@ -84,6 +75,7 @@ static void m_loop()
 {
     int ch;
     int key;
+    terminal_clear();
     for (;;)
     {
         key = -1;
@@ -95,7 +87,7 @@ static void m_loop()
         term.c_lflag &= ~ICANON;
         term.c_lflag &= ~ECHO;
         tcsetattr(0, TCSANOW, &term);
-        setbuf(stdin, NULL); //Deactivate buffer
+        setbuf(stdin, NULL);
         ch = getchar();
         switch (ch)
         {
@@ -181,12 +173,12 @@ static void m_loop()
             m.selected++;
             break;
         case 5:
-            setbuf(stdout, NULL);
+            terminal_clear();
             m.entrys[m.selected].run();
-            setbuf(stdout, buffer);
+            terminal_clear();
             break;
         case 6:
-            setbuf(stdout, NULL);
+            terminal_clear();
             exit(0);
             break;
         }
@@ -200,6 +192,6 @@ static void m_loop()
  */
 static void m_exit()
 {
-    console_clear();
+    terminal_clear();
     exit(0);
 }

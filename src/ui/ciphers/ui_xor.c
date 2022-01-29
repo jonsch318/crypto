@@ -1,5 +1,5 @@
-#include "../../include/ui/ciphers/ui_xor.h"
-#include "../../../include/console.h"
+#include "../../../include/ui/ciphers/ui_xor.h"
+#include "../../extern/c-terminal/include/terminal.h"
 #include "../../../include/ciphers/xor.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,8 +14,8 @@ void m_xor(void)
     char out[251];
     char pass[251];
     int len = 0;
-    console_clear();
-    console_set_color(WHITE, BLACK);
+    terminal_clear();
+    terminal_set_color(WHITE, BLACK);
     printf("XOR:\n");
     printf("Please enter the text to be encrypted (max. 250):\n");
     scanf("%250[^\n]s", inp);
@@ -25,14 +25,14 @@ void m_xor(void)
     printf("Please enter the key (max. 250):\n");
     scanf("%250[^\n]s", pass);
     len = xor_encrypt(inp, pass, out);
-    console_clear();
-    console_set_color(LIGHT_WHITE, BLACK);
+    terminal_clear();
+    terminal_set_color(LIGHT_WHITE, BLACK);
     printf("Input:\n");
-    console_set_color(WHITE, BLACK);
+    terminal_set_color(WHITE, BLACK);
     printf("%s\n", inp);
-    console_set_color(LIGHT_WHITE, BLACK);
+    terminal_set_color(LIGHT_WHITE, BLACK);
     printf("ciphertext:\n");
-    console_set_color(WHITE, BLACK);
+    terminal_set_color(WHITE, BLACK);
     for (int i = 0; i <= len; i++)
     {
         switch (out[i])
@@ -139,14 +139,14 @@ void m_xor(void)
         }
     }
     printf("\n\n");
-    console_set_color(LIGHT_WHITE, BLACK);
+    terminal_set_color(LIGHT_WHITE, BLACK);
     printf("ciphertext[bytes]:\n");
-    console_set_color(WHITE, BLACK);
+    terminal_set_color(WHITE, BLACK);
     for (int i = 0; i <= len; i++)
     {
         printf("%u ", out[i]);
     }
-    console_reset_color();
+    terminal_reset_color();
     getchar();
     printf("\nPress enter to return...");
     while (getchar() != '\n')
