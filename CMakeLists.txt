@@ -18,6 +18,7 @@ list(APPEND LIBS c_terminal)
 list(APPEND LIBS crypto_ui)
 list(APPEND LIBS ciphers)
 list(APPEND LIBS helper_functions)
+list(APPEND LIBS m)
 
 if(USE_GMP)
     find_package(GMP REQUIRED)
