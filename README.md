@@ -11,8 +11,8 @@ crypto is licensed under the GNU GLP v3 license. See [LICENSE](https://github.co
 ## Clone
 To clone the repository, use the following commands:
 ```bash
-git clone --recurse-submodules <url>
-cd <repo>
+git clone --recurse-submodules https://github.com/JohnnyS318/crypto.git
+cd crypto
 git submodule foreach git checkout master
 #run the following command to update the submodule
 git submodule foreach git pull
