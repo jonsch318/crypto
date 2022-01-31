@@ -1,0 +1,1 @@
+option('USE_GMP', type : 'boolean', value : true, description : 'Use gmp to support BigInt')

@@ -1,6 +1,6 @@
-#include "../../../include/ui/ciphers/ui_xor.h"
-#include "../../extern/c-terminal/include/terminal.h"
-#include "../../../include/ciphers/xor.h"
+#include "ui/ciphers/ui_xor.h"
+#include "terminal.h"
+#include "ciphers/xor.h"
 #include <stdio.h>
 #include <stdlib.h>
 

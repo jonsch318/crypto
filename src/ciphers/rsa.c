@@ -9,7 +9,7 @@
 #ifdef USE_GMP
 #include <gmp.h>
 #endif
-#include "../../include/ciphers/rsa.h"
+#include "ciphers/rsa.h"
 
 static uint32_t rsa_encrypt(uint32_t c, uint32_t n, uint32_t e);
 static uint32_t rsa_decrypt(uint32_t m, uint32_t n, uint32_t d) __attribute__((unused));

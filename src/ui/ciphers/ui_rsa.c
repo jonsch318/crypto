@@ -1,7 +1,7 @@
-#include "../../../include/ui/ciphers/ui_rsa.h"
-#include "../../extern/c-terminal/include/terminal.h"
-#include "../../../include/ciphers/rsa.h"
-#include "../../../include/helper_functions.h"
+#include "ui/ciphers/ui_rsa.h"
+#include "terminal.h"
+#include "ciphers/rsa.h"
+#include "helper_functions.h"
 #include <stdint.h>
 #include <inttypes.h>
 #include <stdio.h>

@@ -64,4 +64,6 @@ CMakeFiles/
 *.cmake
 !FindGMP.cmake
 Makefile
-src/extern/
+
+build/
+builddir/
