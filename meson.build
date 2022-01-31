@@ -21,8 +21,7 @@ crypto_bin_deps = [
 ]
 
 crypto_lib_deps = [
-  ui_lib,
-  ciphers_lib,
+  ui_lib
 ]
 
 executable('crypto', main_source, include_directories: incdir, dependencies: crypto_bin_deps, link_with: crypto_lib_deps)
