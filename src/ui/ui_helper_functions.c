@@ -1,6 +1,6 @@
-#include "../../include/ui/ui_helper_functions.h"
-#include "../extern/c-terminal/include/terminal.h"
-#include "../../include/helper_functions.h"
+#include "ui/ui_helper_functions.h"
+#include "terminal.h"
+#include "helper_functions.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <inttypes.h>

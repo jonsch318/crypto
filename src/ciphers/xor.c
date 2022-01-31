@@ -1,4 +1,4 @@
-#include "../../include/ciphers/xor.h"
+#include "ciphers/xor.h"
 #include <stdlib.h>
 
 int xor_encrypt(char *inp, char *pass, char *outp)

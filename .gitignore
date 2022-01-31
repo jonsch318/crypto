@@ -65,3 +65,5 @@ CMakeFiles/
 !FindGMP.cmake
 Makefile
 src/extern/
+
+build/
