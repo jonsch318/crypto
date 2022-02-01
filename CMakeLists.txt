@@ -28,9 +28,12 @@ if(USE_GMP)
     target_compile_definitions(helper_functions PUBLIC USE_GMP)
 endif()
 
+
 add_executable(crypto src/main.c)
 
 target_link_libraries(crypto PUBLIC ${LIBS})
+
+target_include_directories(crypto PUBLIC ${CMAKE_SOURCE_DIR}/include/ ${CMAKE_SOURCE_DIR}/src/extern/c-terminal/include/)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
