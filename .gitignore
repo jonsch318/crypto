@@ -67,3 +67,4 @@ Makefile
 
 build/
 builddir/
+*.build
