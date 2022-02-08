@@ -48,10 +48,10 @@ void m_is_prime()
 void m_prime_get()
 {
     int i = 0;
-#if !USE_GMP
+#if !defined USE_GMP
     int n = 0;
     uint32_t p = 0;
-#elif USE_GMP
+#else
     mpz_t p;
     int tmp = 0;
     mp_bitcnt_t n = 1;
@@ -62,9 +62,9 @@ void m_prime_get()
     printf("Random prime number generator:\n");
     printf("Please enter the amount and size of numbers to be generated: ");
     terminal_set_color(LIGHT_WHITE, BLACK);
-#if !USE_GMP
+#if !defined USE_GMP
     scanf("%d %d", &i, &n);
-#elif USE_GMP
+#else
     scanf("%d %d", &i, &tmp);
     n = (mp_bitcnt_t)tmp;
 #endif
@@ -72,10 +72,10 @@ void m_prime_get()
     while (i)
     {
         terminal_set_color((i % 2) * WHITE + (!(i % 2)) * GRAY, BLACK);
-#if !USE_GMP
+#if !defined USE_GMP
         p = prime_get(n);
         printf("%d: %" PRIu32 "\n", i, p);
-#elif USE_GMP
+#else
         prime_gmp_get(n, &p);
         gmp_printf("%d: %Zd\n", i, p);
 #endif
