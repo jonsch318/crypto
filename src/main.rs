@@ -1,7 +1,7 @@
 use std::io;
 
-mod ui;
-mod cyphers;
+pub mod ui;
+pub mod cyphers;
 
 mod cypher {
     pub fn caesar() -> i32 {
@@ -35,7 +35,7 @@ fn main() {
     let mut app = ui::ConsoleApp::new();
     app.register_program("Terminal Test", terminal_test);
 
-    app.register_program("Test Cyphers", cyphers::CypherSelection);
+    app.register_program("Test Cyphers", cyphers::cypher_selection_ui);
 
     app.run();
 }

@@ -13,9 +13,7 @@ fn exit() -> i32 {
     return 0;
 }
 
-fn program_showcase_wrapper() -> i32 {
-    0
-} 
+fn program_showcase_wrapper() -> i32 { 0 } 
 
 fn program_showcase(selection: &ProgramSelecton) -> i32 {
     println!("Registered Programs:");
