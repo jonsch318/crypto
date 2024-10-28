@@ -1,5 +1,0 @@
-[submodule "src/extern/c-terminal"]
-	path = src/extern/c-terminal
-	url = https://github.com/NilEis/C-Terminal
-	branch = master
-	update = merge
