@@ -98,3 +98,19 @@ test "extended gcd" {
     try std.testing.expect(res8.coefficients.x == 63872172236815977368617);
     try std.testing.expect(res8.coefficients.y == -345259153587198005977872461490);
 }
+
+/// Computes the modular exponentiation of a number.
+pub fn modPow(comptime T: type, v: T, e: T, m: T) T {
+    var c: T = 1;
+    var i: T = 0;
+    while (i < e) : (i += 1) {
+        c = @mod(v * c, m);
+    }
+    return c;
+}
+
+test "modPow" {
+    try std.testing.expectEqual(6214, modPow(u64, 41213, 1451435, 13123));
+    try std.testing.expectEqual(92, modPow(u64, 41213, 1451435, 131));
+    try std.testing.expectEqual(127728, modPow(u64, 5243652, 1451435, 131312));
+}

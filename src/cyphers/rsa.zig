@@ -31,3 +31,50 @@ test "key generation" {
     try std.testing.expect(res3.public.modulus == 480657581);
     try std.testing.expect(res3.public.exponent == 65537);
 }
+
+pub fn encrypt(comptime T: type, e: T, modulus: T, v: u8) T {
+    return math.modPow(T, v, e, modulus);
+}
+
+pub fn decrypt(comptime T: type, d: T, modulus: T, v: T) u8 {
+    return @intCast(math.modPow(T, v, d, modulus));
+}
+
+test "en-/decrypt" {
+    const rand = std.crypto.random;
+    for (0..128) |_| {
+        const v: u8 = rand.int(u8);
+        const enc = encrypt(u64, 65537, 480657581, v);
+        const dec = decrypt(u64, 1699955, 480657581, enc);
+        try std.testing.expectEqual(v, dec);
+    }
+}
+
+pub fn encryptBytes(comptime T: type, allocator: std.mem.Allocator, e: T, modulus: T, s: []const u8) ![]T {
+    var result = try allocator.alloc(T, s.len);
+    for (0..s.len) |i| {
+        result[i] = encrypt(T, e, modulus, s[i]);
+    }
+    return result;
+}
+
+pub fn decryptBytes(comptime T: type, allocator: std.mem.Allocator, d: T, modulus: T, s: []const T) ![]u8 {
+    var result = try allocator.alloc(u8, s.len);
+    for (0..s.len) |i| {
+        result[i] = decrypt(T, d, modulus, s[i]);
+    }
+    return result;
+}
+
+test "en-/decrypt string" {
+    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
+    defer arena.deinit();
+    const allocator = arena.allocator();
+    const rand = std.crypto.random;
+    for (0..8) |_| {
+        const s = [_]u8{ rand.intRangeAtMost(u8, 'a', 'z'), rand.intRangeAtMost(u8, 'a', 'z'), rand.intRangeAtMost(u8, 'a', 'z'), rand.intRangeAtMost(u8, 'a', 'z'), rand.intRangeAtMost(u8, 'a', 'z') };
+        const enc = try encryptBytes(u64, allocator, 65537, 480657581, &s);
+        const dec = try decryptBytes(u64, allocator, 1699955, 480657581, enc);
+        try std.testing.expectEqualStrings(&s, dec);
+    }
+}
